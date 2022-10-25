@@ -1,22 +1,37 @@
 version: 2.1
 
 orbs:
-  welcome: circleci/welcome-orb@0.4.1
+  #welcome: circleci/welcome-orb@0.4.1
+  aws-cli: circleci/aws-cli@2.0.3
+
+commands:
+  print_pipeline_id:
+    parameters:
+      id:
+        type: string
+    steps:
+      - run: echo << parameters.id >>
+  
+  destroy_enviroment:
+    steps:
+      - run:
+        name: Destroy enviroment
+        when: on_fail
+        command: |
+          aws cloudformation delete-stack --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5}
 
 jobs:
-  create_infrastructure:
+  print_greetings:
     docker:
-      - image: amazon/aws-cli
+      - image: circleci/node:13.8.0
     steps:
-      - checkout
-      - run:
-        name: Create Cloudformation Stack
-        command: |
-          aws cloudformation deploy \
-            --template-file template.yml \
-            --stack-name my-stack
+      - print_pipeline_id:
+        id: << pipeline.id >>
+      - run: echo HELLO
+      - run: echo WORLD
+      - run: echo $_env_name
 
 workflows:
   my_workflow:
     jobs:
-      - create_infrastructure
+      - print_greetings
