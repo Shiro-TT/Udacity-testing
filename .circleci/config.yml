@@ -11,6 +11,14 @@ commands:
         type: string
     steps:
       - run: echo << parameters.id >>
+  
+  destroy_enviroment:
+    steps:
+      - run:
+          name: Destroy enviroment
+          when: on_fail
+          command: |
+            aws cloudformation delete-stack --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5}
 
 jobs:
   print_greetings:
@@ -23,7 +31,21 @@ jobs:
       - run: echo WORLD
       - run: echo $_env_name
 
+  create_infrastructure:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Create Cloudformation Stack
+          command: |
+            aws cloudformation deploy \
+              --template-file template.yml \
+              --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
+              --region us-west-2
+
 workflows:
   my_workflow:
     jobs:
       - print_greetings
+      - create_infrastructure
