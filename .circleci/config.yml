@@ -44,9 +44,26 @@ jobs:
               --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
               --region us-west-2
       - destroy_enviroment
-      
+  
+  configure_infrastructure:
+    docker:
+      - image: python:3.7-alphine3.11
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: ["ed:70:c2:43:1d:a3:42:3d:a3:7b:e9:6f:b6:cc:49:29"]
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update ansible
+      - runu:
+          name: Run Playbook and Configure server
+          command: |
+            ansible-playbook -i inventory main.yml
+
 workflows:
   my_workflow:
     jobs:
       - print_greetings
       - create_infrastructure
+      - configure_infrastructure
