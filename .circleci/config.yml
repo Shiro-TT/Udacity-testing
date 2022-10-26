@@ -60,6 +60,26 @@ jobs:
           name: Configure server
           command: |
             ansible-playbook -i inventory.txt server_configure.yml
+  
+  smoke_test:
+    docker:
+      - image: alpine:latest
+    steps:
+      - run:
+          name: Update curl
+          command: |
+            apk add --update curl
+      - run:
+          name: Smoke test
+          command: |
+            URL="https://blog.udacity.com/"
+            if curl -s --head ${URL}
+            then
+              return 0
+            else
+              return 1
+            fi
+      - destroy_enviroment
 
 workflows:
   my_workflow:
@@ -67,3 +87,6 @@ workflows:
       - print_greetings
       #- create_infrastructure
       - configure_infrastructure
+      - smoke_test:
+          requires:
+            - configure_infrastructure
