@@ -47,7 +47,7 @@ jobs:
   
   configure_infrastructure:
     docker:
-      - image: pytho:3.11-rc-alpine
+      - image: python:3.11-rc-alpine
     steps:
       - checkout
       - add_ssh_keys:
