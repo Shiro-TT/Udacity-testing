@@ -47,7 +47,7 @@ jobs:
   
   configure_infrastructure:
     docker:
-      - image: alpine:3.15
+      - image: pytho:3.11-rc-alpine
     steps:
       - checkout
       - add_ssh_keys:
@@ -59,7 +59,7 @@ jobs:
       - run:
           name: Configure server
           command: |
-            ansible-playbook -vvvv -i inventory.txt server_configure.yml
+            ansible-playbook -i inventory.txt server_configure.yml
 
 workflows:
   my_workflow:
