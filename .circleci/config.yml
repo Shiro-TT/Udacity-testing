@@ -47,7 +47,7 @@ jobs:
   
   configure_infrastructure:
     docker:
-      - image: python:3.7-alpine3.11
+      - image: ansible/ansible
     steps:
       - checkout
       - add_ssh_keys:
@@ -57,7 +57,7 @@ jobs:
           command: |
             apk add --update ansible
       - run:
-          name: Run Playbook and Configure server
+          name: Configure server
           command: |
             ansible-playbook -i inventory.txt main.yml
 
