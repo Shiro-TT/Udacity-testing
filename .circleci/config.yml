@@ -85,8 +85,10 @@ workflows:
   my_workflow:
     jobs:
       - print_greetings
-      - create_infrastructure
-      #- configure_infrastructure
-      #- smoke_test:
+      #- create_infrastructure
           #requires:
-            #- configure_infrastructure
+            #- print_greetings
+      - configure_infrastructure
+      - smoke_test:
+          requires:
+            - configure_infrastructure
