@@ -128,7 +128,7 @@ jobs:
   clean_up_old_front_end:
     docker:
       - image: amazon/aws-cli
-    step:
+    steps:
       - checkout
       - run: yum install -y tar gzip
       - attch_workspace:
