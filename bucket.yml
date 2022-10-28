@@ -3,6 +3,7 @@ Parameters:
   MyBucketName:
     Description: Existing Bucket Name
     Type: String
+    
 Resources:
   WebsiteBucket:
     Type: AWS::S3::Bucket
@@ -11,6 +12,7 @@ Resources:
     WebsiteConfiguration:
       IndexDocument: index.html
       ErrorDocument: error.html
+
   WebsiteBucketPolicy:
     Type: AWS::S3::BucketPolicy
     Properties:
