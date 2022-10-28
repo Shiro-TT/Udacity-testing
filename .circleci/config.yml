@@ -102,10 +102,10 @@ jobs:
       - checkout
       - run: yum install -y tar gzip
       - run:
-          name: Fetch and save the old pipeline ID (bucket)
+          name: Fetch and save the old pipeline ID (bucket) responsible for last release.
           command: |
-            aws cloudformation list-exports \
-            --query "Exports[?Name==\`PipelineID\`].Value" \
+            aws cloudformation \
+            list-exports --query "Exports[?Name==\`PipelineID\`].Value" \
             --no-paginate --output text > ~/textfile.txt
       - persist_to_workspace:
           root: ~/
