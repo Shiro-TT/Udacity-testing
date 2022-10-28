@@ -3,15 +3,16 @@ Parameters:
   MyBucketName:
     Description: Existing Bucket Name
     Type: String
-    
+
 Resources:
   WebsiteBucket:
     Type: AWS::S3::Bucket
-    BucketName: !Sub "${MyBucketName}"
-    AccessControll: PublicRead
-    WebsiteConfiguration:
-      IndexDocument: index.html
-      ErrorDocument: error.html
+    Properties:
+      BucketName: !Sub "${MyBucketName}"
+      AccessControll: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: error.html
 
   WebsiteBucketPolicy:
     Type: AWS::S3::BucketPolicy
